@@ -3,7 +3,7 @@ package com.sachingarg;
 public class NullRCModel implements RCModel
 {
 
-	private static final int NoOfSymbols = 257;
+	private static final int NoOfSymbols = 256;
 	private int[] Frequency;
 
 	public NullRCModel()

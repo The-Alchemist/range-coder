@@ -15,14 +15,14 @@ import java.io.OutputStream;
 public final class CompressedOutputStream extends OutputStream {
 	
 	public CompressedOutputStream(OutputStream out) {
+
 		Encoder=new RangeEncoder64(out);
-		Model=new Order0Model();
+		Model=new NullRCModel();
 	}
 
 	public CompressedOutputStream(OutputStream out, RCModel model)
 	{
-
-		Encoder=new RangeEncoder64(out);
+		Encoder=new RangeEncoderQS64(out);
 		Model = model;
 	}
 
@@ -40,14 +40,22 @@ public final class CompressedOutputStream extends OutputStream {
     }
 
     public void write(byte[] bs, int off, int len)  throws IOException {
-    	while (off < len) write(bs[off++]);
+    	while (off < len)
+		{
+			final byte b = bs[off++];
+			final int convertByteToInt = 128 + (int)b;
+			write(convertByteToInt);
+		}
     }
 
     public void write(int i)  throws IOException {
-    	Encoder.EncodeRange(Model.getCumulativeFrequency(i),Model.getCumulativeFrequency(i+1),Model.getCumulativeFrequency(Model.getNumberOfSymbols()));
+    	final int cumFreq = Model.getCumulativeFrequency(i);
+		final int cumFreqNext = Model.getCumulativeFrequency(i+1);
+		final int cumFreqRange = Model.getCumulativeFrequency(Model.getNumberOfSymbols());
+		Encoder.EncodeRange(cumFreq,cumFreqNext,cumFreqRange);
     	Model.update(i);
     }
 
     private RCModel Model;
-	private RangeEncoder64 Encoder;
+	private IRangeEncoder Encoder;
 }

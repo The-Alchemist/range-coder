@@ -19,51 +19,60 @@ import java.lang.Exception;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 
-public final class Test {
+import com.google.common.base.Stopwatch;
+import com.google.common.io.CountingInputStream;
+import com.google.common.io.NullOutputStream;
 
-    static void CopyStream(InputStream in, OutputStream out) throws IOException {
-		while (true) {
-			int ch = in.read();
-			if (ch == -1) {
-				in.close();
-				out.close();
-				return;
-			}
-			out.write(ch);
+public final class Test
+{
+
+	static void CopyStream(InputStream in, OutputStream out) throws IOException
+	{
+		byte[] bytes = new byte[8 * 1024];
+		int bytesRead = 0;
+		while ((bytesRead = in.read(bytes)) != -1)
+		{
+			out.write(bytes, 0, bytesRead);
 		}
-    }
+		in.close();
+		out.close();
+	}
 
-//  Takes 3 arguments at command line.
-//  First argument is either 'c' or 'd', denoting compression and decompression 
-//  respectively. Second and third arguments are the input and output file names 
-	public static void main(String[] args) {
-		try {
-				if(args.length!=3)
-					throw new Exception("Please pass correct number of arguments");
+	// Takes 3 arguments at command line.
+	// First argument is either 'c' or 'd', denoting compression and decompression
+	// respectively. Second and third arguments are the input and output file names
+	public static void main(String[] args) throws Exception
+	{
+		if (args.length != 2)
+			throw new Exception("Please pass correct number of arguments");
 
-				String OpCode=args[0];
-				String InputFile=args[1];
-				String OutputFile=args[2];
+		String OpCode = args[0];
+		String InputFile = args[1];
+		// String OutputFile=args[2];
 
-				InputStream in=new BufferedInputStream(new FileInputStream(InputFile));
-				OutputStream out=new BufferedOutputStream(new FileOutputStream(OutputFile));
-			
-				if(OpCode.equals("c")) {
-					CompressedOutputStream Compressed=new CompressedOutputStream(out);
-					CopyStream(in,Compressed);
-				}
-				else if(OpCode.equals("d")) {
-					DecompressedInputStream Decompressed=new DecompressedInputStream(in);
-					CopyStream(Decompressed,out);
-					
-				}else {
-					throw new Exception("Pass either c or d as opcode");
-				}
-				
-		} catch(IOException e) {
-			e.printStackTrace();
-		} catch(Throwable e) {
-			e.printStackTrace();
+		for (int i = 0; i != 7; ++i)
+		{
+			CountingInputStream in = new CountingInputStream(new BufferedInputStream(new FileInputStream(InputFile)));
+			// OutputStream out=new BufferedOutputStream(new FileOutputStream(OutputFile));
+			OutputStream out = new NullOutputStream();
+
+			Stopwatch sw = new Stopwatch();
+			sw.start();
+			if (OpCode.equals("c"))
+			{
+				CompressedOutputStream Compressed = new CompressedOutputStream(out);
+				CopyStream(in, Compressed);
+			} else if (OpCode.equals("d"))
+			{
+				DecompressedInputStream Decompressed = new DecompressedInputStream(in);
+				CopyStream(Decompressed, out);
+
+			} else
+			{
+				throw new Exception("Pass either c or d as opcode");
+			}
+			sw.stop();
+			System.out.format("Take %d: %.2fMB in %s\n", i, in.getCount() / 1000000.0, sw.toString());
 		}
 	}
 }
