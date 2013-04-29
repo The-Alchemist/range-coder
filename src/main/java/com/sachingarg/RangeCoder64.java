@@ -10,9 +10,9 @@ package com.sachingarg;
 //http://www.sachingarg.com/compression/entropy_coding/java_range_coder
 
 public class RangeCoder64 {
-	static final protected long Top=1L<<48;
-	static final protected long Bottom=1L<<40;
-	static final protected long MaxRange=Bottom;
+	public static final long Top=1L<<48;
+	public static final long Bottom=1L<<40;
+	public static final long MaxRange=Bottom;
 	
 	protected long Low=0;
 	protected long Range=0x00FFFFFFFFFFFFFFL;
