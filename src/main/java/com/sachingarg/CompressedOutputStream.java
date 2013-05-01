@@ -22,7 +22,7 @@ public final class CompressedOutputStream extends OutputStream {
 
 	public CompressedOutputStream(OutputStream out, RCModel model)
 	{
-		Encoder=new RangeEncoderQS64(out);
+		Encoder=new RangeEncoder64(out);
 		Model = model;
 	}
 
