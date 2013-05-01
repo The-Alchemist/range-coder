@@ -12,12 +12,21 @@ import kp.FenwickTree;
 public class FenwickTreeModel implements RCModel
 {
 
-	protected final int NoOfSymbols=257; //256 + EOF
-	private final FenwickTree fw = new FenwickTree(NoOfSymbols + 1);
-	
+	protected final int NoOfSymbols;
+	private final FenwickTree fw;
+
 	public FenwickTreeModel()
 	{
-		// don't increment the count of the first item because Order0Model doesn't
+		this(256);
+	}
+
+	public FenwickTreeModel(int n)
+	{
+		NoOfSymbols = n + 1; //+ EOF
+		fw = new FenwickTree(NoOfSymbols + 1);
+
+		// don't increment the count of the first item because the cumulative
+		// frequency at zero is always zero
 		for(int i = 1; i != getNumberOfSymbols()+1; ++i)
 		{
 			this.fw.addValue(i, 1);

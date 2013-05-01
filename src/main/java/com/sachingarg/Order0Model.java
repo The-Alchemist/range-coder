@@ -13,13 +13,18 @@ public final class Order0Model implements RCModel {
 	
 	protected int[] Frequency;
 
-	protected final int NoOfSymbols=257; //256 + EOF
-	
+	protected final int NoOfSymbols;
+
 	public Order0Model() {
+		this(256);
+	}
+
+	public Order0Model(int n) {
+		NoOfSymbols=n+1; // + EOF
 		Frequency=new int[NoOfSymbols+1];
-		
+
 		for(int i=0;i<NoOfSymbols+1;i++) {
-			Frequency[i]=i;					
+			Frequency[i]=i;
 		}
 	}
 
@@ -52,9 +57,9 @@ public final class Order0Model implements RCModel {
 
 	@Override
 	public void update(int i) {
-    	for(int j=i+1;j<Frequency.length;j++)
-    		Frequency[j]++;
+		for(int j=i+1;j<Frequency.length;j++)
+			Frequency[j]++;
 
-    	Rescale();
+		Rescale();
 	}
 }
