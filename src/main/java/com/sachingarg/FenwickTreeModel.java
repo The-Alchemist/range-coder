@@ -39,7 +39,7 @@ public class FenwickTreeModel implements RCModel
 	@Override
 	public void update(int i)
 	{
-		this.fw.addValue(i, 1);
+		this.fw.addValue(i+1, 1);
 	}
 
 }

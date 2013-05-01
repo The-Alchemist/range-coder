@@ -52,7 +52,7 @@ public final class Order0Model implements RCModel {
 
 	@Override
 	public void update(int i) {
-    	for(int j=i;j<Frequency.length;j++)
+    	for(int j=i+1;j<Frequency.length;j++)
     		Frequency[j]++;
 
     	Rescale();
