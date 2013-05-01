@@ -18,7 +18,7 @@ public class FenwickTreeModel implements RCModel
 	public FenwickTreeModel()
 	{
 		// don't increment the count of the first item because Order0Model doesn't
-		for(int i = 1; i != getNumberOfSymbols(); ++i)
+		for(int i = 1; i != getNumberOfSymbols()+1; ++i)
 		{
 			this.fw.addValue(i, 1);
 		}
