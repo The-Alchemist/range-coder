@@ -51,4 +51,10 @@ public class FenwickTreeModel implements RCModel
 		this.fw.addValue(i+1, 1);
 	}
 
+	@Override
+	public int getSymbolForFrequency(int count) {
+		int result = fw.indexOfCumulativeFrequency(count);
+		return result;
+	}
+
 }

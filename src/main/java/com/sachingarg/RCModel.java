@@ -9,4 +9,6 @@ public interface RCModel
 
 	public void update(int i);
 
+	public int getSymbolForFrequency(int count);
+
 }

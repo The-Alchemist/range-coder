@@ -1,5 +1,7 @@
 package com.sachingarg;
 
+import java.util.Arrays;
+
 //Java Source code for Range Coder
 //By Sachin Garg, 2006
 //
@@ -61,5 +63,17 @@ public final class Order0Model implements RCModel {
 			Frequency[j]++;
 
 		Rescale();
+	}
+
+	@Override
+	public int getSymbolForFrequency(int count) {
+		int result = Arrays.binarySearch(Frequency, count);
+		if (result < 0) {
+		    result = -result - 1;
+		}
+		if (result >= NoOfSymbols) {
+		    return NoOfSymbols-1;
+		}
+		return result - 1;
 	}
 }

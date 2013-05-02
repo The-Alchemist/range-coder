@@ -73,9 +73,8 @@ public final class DecompressedInputStream extends InputStream
 
 		int Count = Decoder.GetCurrentCount(Model.getCumulativeFrequency(Model.getNumberOfSymbols()));
 
-		int Symbol;
-		for (Symbol = Model.getNumberOfSymbols() - 1; Model.getCumulativeFrequency(Symbol) > Count; Symbol--)
-			;
+		int Symbol = Model.getSymbolForFrequency(Count);
+
 		_nextByte = Symbol == (Model.getNumberOfSymbols() - 1) ? -1 : Symbol;
 
 		Decoder.RemoveRange(Model.getCumulativeFrequency(Symbol), Model.getCumulativeFrequency(Symbol + 1), Model.getCumulativeFrequency(Model.getNumberOfSymbols()));

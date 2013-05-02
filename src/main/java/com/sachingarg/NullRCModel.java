@@ -33,4 +33,9 @@ public class NullRCModel implements RCModel
 	{
 	}
 
+	@Override
+	public int getSymbolForFrequency(int count) {
+		return count;
+	}
+
 }
